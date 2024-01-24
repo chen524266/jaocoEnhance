@@ -178,7 +178,7 @@ public class ClassAnalyzer extends ClassProbesVisitor
 					Map<String, Instruction> mergeInstructionMap = instrunctions.get(coverage.getName()).get(methodSign);
 					// 通过指令判断是否为同一个方法，所有指令签名一样的情况下判断是一样的
 					Map<AbstractInsnNode, Instruction> nowInstructions = builder.getInstructionsNotWireJumps();
-					if (mergeInstructionMap.size() == nowInstructions.size()) {
+					if (mergeInstructionMap!=null&&mergeInstructionMap.size() == nowInstructions.size()) {
 						boolean match = true;
 						for (Instruction instruction : mergeInstructionMap
 								.values()) {
