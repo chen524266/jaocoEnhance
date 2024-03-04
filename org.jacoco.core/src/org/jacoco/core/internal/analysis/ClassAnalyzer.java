@@ -149,7 +149,7 @@ public class ClassAnalyzer extends ClassProbesVisitor
 					Map<String, Map<String, Instruction>> methodInstructions = new HashMap<>();
 					Map<String, Instruction> instructionMap = new HashMap<>();
 					Map<AbstractInsnNode, Instruction> builderInstructions = builder
-							.getInstructions();
+							.getInstructionsNotWireJumps();
 					for (Instruction instruction : builderInstructions
 							.values()) {
 						instructionMap.put(instruction.getSign(), instruction);
