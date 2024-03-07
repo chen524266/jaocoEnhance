@@ -97,7 +97,7 @@ public class MethodAnalyzer extends MethodProbesVisitor {
 	@Override
 	public void visitVarInsn(final int opcode, final int var) {
 		String sign = opcode + separator + var + separator + currentNo;
-		builder.addInstruction(currentNode, sign);
+		builder.addInstruction(currentNode, sign,currentProbeId);
 	}
 
 	@Override
