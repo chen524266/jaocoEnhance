@@ -1,7 +1,7 @@
 # jacoco
 
 #### Description
-基于jacoco二开，增量覆盖率合并和不同时间节点的不同class代码覆盖率合并
+Based on jacoco binary opening, merging incremental coverage and merging different class code coverage at different time nodes
 
 #### Software Architecture
 Software architecture description
