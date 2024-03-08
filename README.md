@@ -13,36 +13,21 @@
  --mergeExec 探针数据合并后生成新的exec文件路径 
 
 合并探针数据生成exec的例子，建议在项目中引入jacoco-cli包，在代码中直接执行命令模式: 
-	@Test
-	public void megerReport() throws Exception {
 		File html = new File("D:\\home");
-		execute("report", "D:\\jacoco_merge_test.exec", "--classfiles",
-				"D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\classfiles\\bbzx\\com",
-				"--classfiles",
-				"D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\classfiles\\common\\com",
-				"--classfiles",
-				"D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\classfiles\\reportsupport\\com",
-				"--classfiles",
-				"D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\classfiles\\reportview\\com",
-				"--classfiles",
-				"D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\classfiles\\website\\com",
-				 "--mergeExecfilepath",
-				 "D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616785_616788\\execfiles\\jacoco20240109165235.exec",
-				 "--mergeClassfilepath",
-				 "D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\classfiles\\bbzx\\com",
-				 "--mergeClassfilepath",
-				 "D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\classfiles\\reportview\\com",
-				 "--mergeClassfilepath",
-				 "D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\classfiles\\common\\com",
-				 "--mergeClassfilepath",
-				 "D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\classfiles\\reportsupport\\com",
-				 "--mergeClassfilepath",
-				 "D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\classfiles\\website\\com",
-				 "--sourcefiles",
-				 "D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\sourcefiles",
-				 "--onlyMergeExec", "true",
-				 "--mergeExec", "D:\\jacoco_merge_test.exec",
-				"--html", html.getAbsolutePath());
-		assertOk();
-	}
+		new Main().execute("report", "D:\\jacoco_merge_test.exec", 
+		"--classfiles","D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\classfiles\\bbzx\\com",
+		"--classfiles","D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\classfiles\\common\\com",
+		"--classfiles","D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\classfiles\\reportsupport\\com",
+		"--classfiles","D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\classfiles\\reportview\\com",
+		"--classfiles","D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\classfiles\\website\\com",
+        "--mergeExecfilepath","D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616785_616788\\execfiles\\jacoco20240109165235.exec",
+        "--mergeClassfilepath","D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\classfiles\\bbzx\\com",
+        "--mergeClassfilepath","D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\classfiles\\reportview\\com",
+        "--mergeClassfilepath","D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\classfiles\\common\\com",
+        "--mergeClassfilepath","D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\classfiles\\reportsupport\\com",
+        "--mergeClassfilepath","D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\classfiles\\website\\com",
+        "--sourcefiles","D:\\gitworkplace\\luckframeweb\\coverage\\trunk\\616788\\sourcefiles",
+        "--onlyMergeExec", "true",
+        "--mergeExec", "D:\\jacoco_merge_test.exec",
+        "--html", html.getAbsolutePath());
 或者通过jacoco-cli.jar包调用方式，java -jar  jacoco-cli.jar report --diffCode diff  --classfiles classdir --args value等等            
