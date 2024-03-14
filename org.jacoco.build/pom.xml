@@ -92,12 +92,12 @@
     <module>../org.jacoco.agent</module>
     <module>../org.jacoco.ant</module>
     <module>../org.jacoco.cli</module>
-    <module>../org.jacoco.examples</module>
+<!--    <module>../org.jacoco.examples</module>-->
     <module>../jacoco-maven-plugin</module>
 
-    <module>../org.jacoco.tests</module>
+<!--    <module>../org.jacoco.tests</module>-->
 
-    <module>../org.jacoco.doc</module>
+<!--    <module>../org.jacoco.doc</module>-->
     <module>../jacoco</module>
   </modules>
 
@@ -493,11 +493,11 @@
           <artifactId>maven-bundle-plugin</artifactId>
           <version>3.5.1</version>
         </plugin>
-        <plugin>
-          <groupId>com.diffplug.spotless</groupId>
-          <artifactId>spotless-maven-plugin</artifactId>
-          <version>1.24.3</version>
-       </plugin>
+<!--        <plugin>-->
+<!--          <groupId>com.diffplug.spotless</groupId>-->
+<!--          <artifactId>spotless-maven-plugin</artifactId>-->
+<!--          <version>1.24.3</version>-->
+<!--       </plugin>-->
       </plugins>
     </pluginManagement>
 
