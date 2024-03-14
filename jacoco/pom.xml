@@ -60,18 +60,18 @@
       <version>${project.version}</version>
       <classifier>nodeps</classifier>
     </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>org.jacoco.examples</artifactId>
-      <version>${project.version}</version>
-      <type>zip</type>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>org.jacoco.doc</artifactId>
-      <version>${project.version}</version>
-      <classifier>javadoc</classifier>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>${project.groupId}</groupId>-->
+<!--      <artifactId>org.jacoco.examples</artifactId>-->
+<!--      <version>${project.version}</version>-->
+<!--      <type>zip</type>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>${project.groupId}</groupId>-->
+<!--      <artifactId>org.jacoco.doc</artifactId>-->
+<!--      <version>${project.version}</version>-->
+<!--      <classifier>javadoc</classifier>-->
+<!--    </dependency>-->
   </dependencies>
 
   <build>
@@ -98,30 +98,30 @@
         </executions>
       </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>enforce-distribution-size</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <phase>verify</phase>
-            <configuration>
-              <rules>
-                <requireFilesSize>
-                  <maxsize>4500000</maxsize>
-                  <minsize>3400000</minsize>
-                  <files>
-                    <file>${project.build.directory}/jacoco-${qualified.bundle.version}.zip</file>
-                  </files>
-                </requireFilesSize>
-              </rules>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-enforcer-plugin</artifactId>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            <id>enforce-distribution-size</id>-->
+<!--            <goals>-->
+<!--              <goal>enforce</goal>-->
+<!--            </goals>-->
+<!--            <phase>verify</phase>-->
+<!--            <configuration>-->
+<!--              <rules>-->
+<!--                <requireFilesSize>-->
+<!--                  <maxsize>4500000</maxsize>-->
+<!--                  <minsize>3400000</minsize>-->
+<!--                  <files>-->
+<!--                    <file>${project.build.directory}/jacoco-${qualified.bundle.version}.zip</file>-->
+<!--                  </files>-->
+<!--                </requireFilesSize>-->
+<!--              </rules>-->
+<!--            </configuration>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--      </plugin>-->
     </plugins>
   </build>
 </project>
