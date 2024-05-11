@@ -86,7 +86,6 @@ public class Main extends Command {
 		if (command.quiet) {
 			out = NUL;
 		}
-
 		return command.execute(out, err);
 	}
 

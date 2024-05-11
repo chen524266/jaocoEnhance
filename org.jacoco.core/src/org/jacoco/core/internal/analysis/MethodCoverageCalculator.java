@@ -72,7 +72,6 @@ class MethodCoverageCalculator implements IFilterOutput {
 		applyMerges();
 		applyReplacements();
 		ensureCapacity(coverage);
-
 		for (final Entry<AbstractInsnNode, Instruction> entry : instructions
 				.entrySet()) {
 			if (!ignored.contains(entry.getKey())) {
