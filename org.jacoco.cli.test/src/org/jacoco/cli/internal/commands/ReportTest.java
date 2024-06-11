@@ -14,10 +14,11 @@ package org.jacoco.cli.internal.commands;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.*;
 
 import org.jacoco.cli.internal.CommandTestBase;
+import org.jacoco.cli.internal.Main;
+import org.jacoco.core.analysis.IBundleCoverage;
 import org.jacoco.core.data.ExecutionData;
 import org.jacoco.core.data.ExecutionDataWriter;
 import org.junit.Rule;
@@ -221,7 +222,8 @@ public class ReportTest extends CommandTestBase {
 	@Test
 	public void mytest4() throws Exception {
 		File html = new File("D:\\temp\\new\\report");
-		execute("report", "D:\\temp\\测试(2)\\测试\\第一次\\jacoco.exec", "--classfiles",
+		StringWriter out = new StringWriter();
+		new Main("report", "D:\\temp\\测试(2)\\测试\\第一次\\jacoco.exec", "--classfiles",
 				"D:\\temp\\测试(2)\\测试\\第一次\\",
 				"--mergeExecfilepath", "D:\\temp\\测试(2)\\测试\\第一次\\jacoco.exec",
 				"--mergeClassfilepath","D:\\temp\\测试(2)\\测试\\第一次\\",
@@ -229,6 +231,6 @@ public class ReportTest extends CommandTestBase {
 				"D:\\temp\\测试(2)\\测试\\第一次",
 //				"--onlyMergeExec", "true",
 //				"--mergeExec", "D:\\temp\\jacoco.exec",
-				"--html", html.getAbsolutePath());
+				"--html", html.getAbsolutePath()).execute(new PrintWriter(out),new PrintWriter(out));
 	}
 }

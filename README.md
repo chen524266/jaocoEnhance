@@ -15,6 +15,9 @@
 --mergeExecfilepath 需要合并的exec探针文件
  --mergeClassfilepath 需要合并的class文件路径
  --mergeExec 探针数据合并后生成新的exec文件路径 
+ 
+测试例子，请参考测试类
+org.jacoco.cli.internal.commands.ReportTest.mytest4()
 
 合并探针数据生成exec的例子，建议在项目中引入jacoco-cli包，在代码中直接执行命令模式: 
 		File html = new File("D:\\home");

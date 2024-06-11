@@ -103,10 +103,8 @@ public class Report extends Command {
 		try {
 			StringWriter nowoutStringWriter = new StringWriter();
 			PrintWriter nowout = new PrintWriter(nowoutStringWriter);
-			final ExecFileLoader loader = loadExecutionData(out,
-					this.execfiles);
-			final IBundleCoverage bundle = analyze(
-					loader.getExecutionDataStore(), nowout, classfiles, false);
+			final ExecFileLoader loader = loadExecutionData(out, this.execfiles);
+			final IBundleCoverage bundle = analyze(loader.getExecutionDataStore(), nowout, classfiles, false);
 			// 只合并exec文件，不生成报告
 			if (onlyMergeExec != null && onlyMergeExec.equals("true")) {
 				loader.save(new File(mergeExec), true);
