@@ -225,8 +225,8 @@ public class ReportTest extends CommandTestBase {
 		StringWriter out = new StringWriter();
 		new Main("report", "D:\\temp\\测试(2)\\测试\\第一次\\jacoco.exec", "--classfiles",
 				"D:\\temp\\测试(2)\\测试\\第一次\\",
-				"--mergeExecfilepath", "D:\\temp\\测试(2)\\测试\\第一次\\jacoco.exec",
-				"--mergeClassfilepath","D:\\temp\\测试(2)\\测试\\第一次\\",
+				"--mergeExecfilepath", "D:\\temp\\测试(2)\\测试\\第二次\\jacoco.exec",
+				"--mergeClassfilepath","D:\\temp\\测试(2)\\测试\\第二次\\",
 				"--sourcefiles",
 				"D:\\temp\\测试(2)\\测试\\第一次",
 //				"--onlyMergeExec", "true",
