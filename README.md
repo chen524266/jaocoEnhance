@@ -37,4 +37,29 @@ org.jacoco.cli.internal.commands.ReportTest.mytest4()
         "--onlyMergeExec", "true",
         "--mergeExec", "D:\\jacoco_merge_test.exec",
         "--html", html.getAbsolutePath());
-或者通过jacoco-cli.jar包调用方式，java -jar  jacoco-cli.jar report --diffCode diff  --classfiles classdir --args value等等            
+或者通过jacoco-cli.jar包调用方式，java -jar  jacoco-cli.jar report --diffCode diff  --classfiles classdir --args value等等    
+
+jar包方式执行如下(jdk1.8):
+
+1. 直接生成报告的命令
+java -jar org.jacoco.cli-0.8.7-SNAPSHOT-nodeps.jar report F:\webDemo\exec\2.exec --classfiles F:\webDemo\target\classes\ --mergeExecfilepath F:\webDemo\exec\1.exec --mergeClassfilepath F:\webDemo\classes_1\ --diffCodeFiles F:\home\code_diff\webDemo\1111\diff.json --sourcefiles F:\webDemo\src\main\java --html F:\webDemo\exec\report_diff_2
+
+
+2. 合并exec
+java -jar org.jacoco.cli-0.8.7-SNAPSHOT-nodeps.jar report F:\webDemo\exec\2.exec --classfiles F:\webDemo\target\classes\ --mergeExecfilepath F:\webDemo\exec\1.exec --mergeClassfilepath F:\webDemo\classes_1\ --onlyMergeExec true --mergeExec F:\webDemo\exec\merged.exec
+
+第二次合并, 之前合并的exec文件，mergeClassfilepath参数设置为最后一次合并版本的class路径,举例
+
+合并exec的时候，需要指定 mergeClassfilepath
+现在A.exec 和B.exec 合并 成AB.exec
+此时又来一个C.exec
+AB.exec和C.exec合并的时候， AB.exec 的 mergeClassfilepath 应为B的class文件夹路径
+
+
+
+3.生成增量报告
+java -jar org.jacoco.cli-0.8.7-SNAPSHOT-nodeps.jar report F:\webDemo\exec\merged.exec --classfiles F:\webDemo\target\classes --sourcefiles F:\webDemo\src\main\java --html F:\webDemo\exec\report_diff --diffCodeFiles F:\home\code_diff\webDemo\1111\diff.json --encoding=utf8
+
+4.生成全量报告
+java -jar org.jacoco.cli-0.8.7-SNAPSHOT-nodeps.jar report F:\webDemo\exec\merged.exec --classfiles F:\webDemo\target\classes --sourcefiles F:\webDemo\src\main\java --html F:\webDemo\exec\report_full
+        
