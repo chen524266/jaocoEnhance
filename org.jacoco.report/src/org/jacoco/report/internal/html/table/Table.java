@@ -179,7 +179,7 @@ public class Table {
                 td.attr("id",
                         idprefix + String.valueOf(index.getPosition(idx)));
                 if (this.header.equals("修改人")
-                        || this.header.equals("svn提交信息")) {
+                        || this.header.equals("提交信息")) {
                     if (ExecFileLoader.classInfo.get() != null) {
                         Map<String, Map<String, List<MethodInfoDto>>> classInfoDtos = ExecFileLoader.classInfo
                                 .get();

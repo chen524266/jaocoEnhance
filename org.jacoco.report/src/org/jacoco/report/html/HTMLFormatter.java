@@ -176,7 +176,7 @@ public class HTMLFormatter implements IHTMLReportContext {
 		if (addSvnMessage) {
 			t.add("修改人", Styles.CTR2,
 					new PercentageColumn(CounterEntity.BRANCH, locale), false);
-			t.add("svn提交信息", Styles.CTR2,
+			t.add("提交信息", Styles.CTR2,
 					new PercentageColumn(CounterEntity.BRANCH, locale), false);
 		}
 		return t;

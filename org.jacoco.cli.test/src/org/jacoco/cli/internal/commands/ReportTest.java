@@ -223,14 +223,15 @@ public class ReportTest extends CommandTestBase {
 	public void mytest4() throws Exception {
 		File html = new File("D:\\temp\\new\\report");
 		StringWriter out = new StringWriter();
+		//合并生成exec
 		new Main("report", "D:\\temp\\测试(2)\\测试\\第一次\\jacoco.exec", "--classfiles",
 				"D:\\temp\\测试(2)\\测试\\第一次\\",
 				"--mergeExecfilepath", "D:\\temp\\测试(2)\\测试\\第二次\\jacoco.exec",
-				"--mergeClassfilepath","D:\\temp\\测试(2)\\测试\\第二次\\",
+				"--mergeClassfilepath", "D:\\temp\\测试(2)\\测试\\第二次\\",
 				"--sourcefiles",
 				"D:\\temp\\测试(2)\\测试\\第一次",
-//				"--onlyMergeExec", "true",
-//				"--mergeExec", "D:\\temp\\jacoco.exec",
-				"--html", html.getAbsolutePath()).execute(new PrintWriter(out),new PrintWriter(out));
+				"--onlyMergeExec", "true",
+				"--mergeExec", "D:\\temp\\jacoco.exec",
+				"--html", html.getAbsolutePath()).execute(new PrintWriter(out), new PrintWriter(out));
 	}
 }

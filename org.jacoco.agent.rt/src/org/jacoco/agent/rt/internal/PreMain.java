@@ -48,10 +48,8 @@ public final class PreMain {
 		final Agent agent = Agent.getInstance(agentOptions);
 		final IRuntime runtime = createRuntime(inst);
 		runtime.startup(agent.getData());
-		System.out
-				.println("赢时胜自动化测试平台agent【" + agent.getSessionId() + "】启动成功！");
-		inst.addTransformer(new CoverageTransformer(runtime, agentOptions,
-				IExceptionLogger.SYSTEM_ERR));
+		System.out.println("【" + agent.getSessionId() + "】启动成功！");
+		inst.addTransformer(new CoverageTransformer(runtime, agentOptions, IExceptionLogger.SYSTEM_ERR));
 	}
 
 	private static IRuntime createRuntime(final Instrumentation inst)
