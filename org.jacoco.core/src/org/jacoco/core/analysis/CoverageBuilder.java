@@ -77,6 +77,7 @@ public class CoverageBuilder implements ICoverageVisitor {
 					new TypeToken<List<ClassInfoDto>>() {
 					}.getType());
 			Map<String, Map<String, List<MethodInfoDto>>> map = new HashMap<>();
+			classInfos=classInfos.stream().filter(i->i.getMethodInfos()!=null).collect(Collectors.toList());
 			for (ClassInfoDto dto : classInfos) {
 				Map<String, List<MethodInfoDto>> methodInfoMap = dto
 						.getMethodInfos().stream().collect(Collectors

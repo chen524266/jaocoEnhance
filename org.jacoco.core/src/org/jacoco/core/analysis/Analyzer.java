@@ -37,6 +37,7 @@ import org.jacoco.core.internal.diff.ClassInfoDto;
 import org.jacoco.core.internal.diff.CodeDiffUtil;
 import org.jacoco.core.internal.flow.ClassProbesAdapter;
 import org.jacoco.core.internal.instr.InstrSupport;
+import org.jacoco.core.internal.instr.ProbeArrayStrategyFactory;
 import org.jacoco.core.tools.ExecFileLoader;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -91,14 +92,16 @@ public class Analyzer {
 	 * @return ASM visitor to write class definition to
 	 */
 	private ClassVisitor createAnalyzingVisitor(final long classid,
-			final String className, boolean onlyAnaly) {
+			final String className, boolean onlyAnaly,ClassReader reader) {
 		final ExecutionData data = executionData.get(classid);
 		final boolean[] probes;
 		final boolean noMatch;
-		// data为空说明exec文件没有探针信息，说明执行测试的类和进行report的类不一致
 		if (data == null) {
-			probes = null;
-			noMatch = executionData.contains(className);
+			int probeCount = ProbeArrayStrategyFactory.getProbeCounter(reader).getCount();
+			probes = new boolean[probeCount];
+			ExecutionData addEmptyExecutionData=new ExecutionData(classid,className,probes);
+			executionData.put(addEmptyExecutionData);
+			noMatch = false;
 		} else {
 			probes = data.getProbes();
 			noMatch = false;
@@ -148,7 +151,7 @@ public class Analyzer {
 		// ClassAnalyzer的CoverageBuilder builder最终分析指令覆盖级别信息，再推理方法更大的级别
 		String className = reader.getClassName();
 		final ClassVisitor visitor = createAnalyzingVisitor(classId,
-				reader.getClassName(), isOnlyAnaly);
+				reader.getClassName(), isOnlyAnaly,reader);
 		// 重点，开始解析类里面的方法，逐个方法遍历
 		reader.accept(visitor, 0);
 	}
