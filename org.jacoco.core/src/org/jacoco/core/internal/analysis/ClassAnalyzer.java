@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.jacoco.core.internal.analysis;
 
-import java.util.*;
-
 import org.jacoco.core.internal.analysis.filter.Filters;
 import org.jacoco.core.internal.analysis.filter.IFilter;
 import org.jacoco.core.internal.analysis.filter.IFilterContext;
@@ -25,6 +23,8 @@ import org.jacoco.core.tools.ExecFileLoader;
 import org.objectweb.asm.*;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.MethodNode;
+
+import java.util.*;
 
 /**
  * Analyzes the structure of a class.
@@ -78,7 +78,6 @@ public class ClassAnalyzer extends ClassProbesVisitor
         this.filter = Filters.all();
         this.classInfos = classInfos;
         this.onlyAnaly = onlyAnaly;
-
     }
 
     public List<ClassInfoDto> getClassInfos() {
@@ -200,8 +199,7 @@ public class ClassAnalyzer extends ClassProbesVisitor
                         }
                     }
                 }
-                addMethodCoverage(stringPool.get(name), stringPool.get(desc),
-                        stringPool.get(signature), builder, methodNode);
+                addMethodCoverage(stringPool.get(name), stringPool.get(desc), stringPool.get(signature), builder, methodNode);
             }
         };
     }
