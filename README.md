@@ -64,4 +64,4 @@ java -jar org.jacoco.cli-0.8.7-SNAPSHOT-nodeps.jar report F:\webDemo\exec\merged
 java -jar org.jacoco.cli-0.8.7-SNAPSHOT-nodeps.jar report F:\webDemo\exec\merged.exec --classfiles F:\webDemo\target\classes --sourcefiles F:\webDemo\src\main\java --html F:\webDemo\exec\report_full
 
    如有任何疑问，可以加作者微信群交流    
-![输入图片说明](image.png)
+![输入图片说明](image2.png)
