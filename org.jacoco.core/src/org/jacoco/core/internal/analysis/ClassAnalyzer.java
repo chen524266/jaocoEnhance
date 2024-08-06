@@ -194,7 +194,7 @@ public class ClassAnalyzer extends ClassProbesVisitor
                                 nowInstructions.put(key, merge);
                                 // 合并探针  https://github.com/jacoco/jacoco/issues/1644,fix由于插桩策略的问题导致的jump探针不能直接合并的问题
                                 if (probes != null && instruction.getProbeIndex() != -1) {
-                                    if ((instruction.branches > 1 && merge.getBranchCounter().getMissedCount() == 0) || instruction.branches == 1) {
+                                    if ((merge.branches > 1 && merge.getBranchCounter().getMissedCount() == 0) || merge.branches == 1) {
                                         probes[instruction.getProbeIndex()] = merge.getInstructionCounter().getCoveredCount() > 0;
                                     }
                                 }
