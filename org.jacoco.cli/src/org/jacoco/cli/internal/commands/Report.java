@@ -107,7 +107,7 @@ public class Report extends Command {
 			final IBundleCoverage bundle = analyze(loader.getExecutionDataStore(), nowout, classfiles, false);
 			// 只合并exec文件，不生成报告
 			if (onlyMergeExec != null && onlyMergeExec.equals("true")) {
-				loader.save(new File(mergeExec), true);
+				loader.save(new File(mergeExec), false);
 			} else {
 				writeReports(bundle, loader, nowout);
 			}
