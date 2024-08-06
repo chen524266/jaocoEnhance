@@ -188,9 +188,6 @@ public class ClassAnalyzer extends ClassProbesVisitor
                         if (match) {
                             for (AbstractInsnNode key : nowInstructions.keySet()) {
                                 Instruction instruction = nowInstructions.get(key);
-                                if (name.contains("list") && coverage.getName().contains("ProjectPageObjectController") && instruction.getProbeIndex() == 17) {
-                                    System.out.println("ClassAnalyzer.accept");
-                                }
                                 //合并指令
                                 Instruction other = mergeInstructionMap.get(instruction.getSign());
                                 Instruction merge = instruction.merge(other);
@@ -204,9 +201,6 @@ public class ClassAnalyzer extends ClassProbesVisitor
                             }
                         }
                     }
-                }
-                if (name.contains("list") && coverage.getName().contains("ProjectPageObjectController")) {
-                    System.out.println("ClassAnalyzer!!!");
                 }
                 addMethodCoverage(stringPool.get(name), stringPool.get(desc), stringPool.get(signature), builder, methodNode);
             }
