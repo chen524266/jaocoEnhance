@@ -22,6 +22,7 @@ import org.jacoco.core.internal.instr.InstrSupport;
 import org.jacoco.core.tools.ExecFileLoader;
 import org.objectweb.asm.*;
 import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import java.util.*;
@@ -187,17 +188,25 @@ public class ClassAnalyzer extends ClassProbesVisitor
                         if (match) {
                             for (AbstractInsnNode key : nowInstructions.keySet()) {
                                 Instruction instruction = nowInstructions.get(key);
+                                if (name.contains("list") && coverage.getName().contains("ProjectPageObjectController") && instruction.getProbeIndex() == 17) {
+                                    System.out.println("ClassAnalyzer.accept");
+                                }
                                 //合并指令
                                 Instruction other = mergeInstructionMap.get(instruction.getSign());
                                 Instruction merge = instruction.merge(other);
                                 nowInstructions.put(key, merge);
-                                // 合并探针
+                                // 合并探针  https://github.com/jacoco/jacoco/issues/1644,fix由于插桩策略的问题导致的jump探针不能直接合并的问题
                                 if (probes != null && instruction.getProbeIndex() != -1) {
-                                    probes[instruction.getProbeIndex()] = merge.getInstructionCounter().getCoveredCount() > 0;
+                                    if ((instruction.branches > 1 && merge.getBranchCounter().getMissedCount() == 0) || instruction.branches == 1) {
+                                        probes[instruction.getProbeIndex()] = merge.getInstructionCounter().getCoveredCount() > 0;
+                                    }
                                 }
                             }
                         }
                     }
+                }
+                if (name.contains("list") && coverage.getName().contains("ProjectPageObjectController")) {
+                    System.out.println("ClassAnalyzer!!!");
                 }
                 addMethodCoverage(stringPool.get(name), stringPool.get(desc), stringPool.get(signature), builder, methodNode);
             }
