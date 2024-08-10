@@ -116,6 +116,7 @@ public class Report extends Command {
 		} finally {
 			ExecFileLoader.instrunctionsThreadLocal.remove();
 			ExecFileLoader.classInfo.remove();
+			ExecFileLoader.classInfoDto.remove();
 		}
 		return 0;
 	}

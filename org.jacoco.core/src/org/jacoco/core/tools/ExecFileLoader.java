@@ -46,6 +46,8 @@ public class ExecFileLoader {
 	// diff的代码差异类
 	public static ThreadLocal<Map<String, Map<String, List<MethodInfoDto>>>> classInfo = new ThreadLocal<>();
 
+	public static ThreadLocal<List<ClassInfoDto>> classInfoDto = new ThreadLocal<>();
+
 	/**
 	 * New instance to combine session infos and execution data from multiple
 	 * files.

@@ -84,6 +84,7 @@ public class CoverageBuilder implements ICoverageVisitor {
 								.groupingBy(MethodInfoDto::getMethodName));
 				map.put(dto.getClassFile(), methodInfoMap);
 			}
+			ExecFileLoader.classInfoDto.set(classInfos);
 			ExecFileLoader.classInfo.set(map);
 		}
 	}
