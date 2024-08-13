@@ -17,14 +17,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.Arrays;
 import java.util.zip.CRC32;
 import java.util.zip.GZIPInputStream;
@@ -34,6 +27,7 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import org.jacoco.core.analysis.AnalyzerTest;
+import org.jacoco.core.internal.InputStreams;
 import org.jacoco.core.internal.Pack200Streams;
 import org.jacoco.core.internal.data.CRC64;
 import org.jacoco.core.internal.instr.InstrSupport;
@@ -142,6 +136,19 @@ public class InstrumenterTest {
 		TargetLoader loader = new TargetLoader();
 		Class<?> clazz = loader.add(InstrumenterTest.class, bytes);
 		assertEquals("org.jacoco.core.instr.InstrumenterTest", clazz.getName());
+	}
+
+
+	@Test
+	public void testInstrumentClassFile() throws Exception {
+		final InputStream in = new FileInputStream("D:\\gitworkplace\\luckframeweb\\target\\classes\\com\\luckyframe\\LuckyFrameWebApplication.class");
+		final byte[] buffer = InputStreams.readFully(in);
+		byte[] bytes = instrumenter.instrument(buffer, "Test");
+		try (FileOutputStream fos = new FileOutputStream("D:\\test.class")) {
+			fos.write(bytes);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
