@@ -13,9 +13,14 @@
 package org.jacoco.core.internal.flow;
 
 import org.jacoco.core.internal.instr.InstrSupport;
+import org.jacoco.core.internal.instr.ProbeInserter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.AbstractInsnNode;
+import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.VarInsnNode;
 
 /**
  * A {@link MethodVisitor} with additional methods to get probe insertion
@@ -162,7 +167,22 @@ public abstract class MethodProbesVisitor extends MethodVisitor {
 	 */
 	public void accept(final MethodNode methodNode,
 			final MethodVisitor methodVisitor) {
+		for (AbstractInsnNode currentInsn = methodNode.instructions.getFirst(); currentInsn != null; currentInsn = currentInsn.getNext()) {
+			if(currentInsn instanceof MethodInsnNode){
+				if(currentInsn.getNext()!=null){
+					MethodInsnNode methodInsnNode=(MethodInsnNode)currentInsn;
+					if(methodInsnNode.name.equals("getDeclaredFields")&&methodInsnNode.owner.equals("java/lang/Class")){
+						if(currentInsn.getNext() instanceof VarInsnNode){
+							VarInsnNode varInsnNode=(VarInsnNode)currentInsn.getNext();
+							if(varInsnNode.getOpcode()== Opcodes.ASTORE){
+								ProbeInserter.indexs.add(varInsnNode.var);
+							}
+						}
+					}
+				}
+			}
+		}
 		methodNode.accept(methodVisitor);
+		ProbeInserter.indexs.clear();
 	}
-
 }

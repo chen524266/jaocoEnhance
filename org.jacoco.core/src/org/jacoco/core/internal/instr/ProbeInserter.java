@@ -18,6 +18,9 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.TypePath;
+import java.util.HashSet;
+import java.util.Set;
+import static org.objectweb.asm.Opcodes.*;
 
 /**
  * Internal utility to add probes into the control flow of a method. The code
@@ -25,7 +28,7 @@ import org.objectweb.asm.TypePath;
  * addition the probe array has to be retrieved at the beginning of the method
  * and stored in a local variable.
  */
-class ProbeInserter extends MethodVisitor implements IProbeInserter {
+public class ProbeInserter extends MethodVisitor implements IProbeInserter {
 
 	private final IProbeArrayStrategy arrayStrategy;
 
@@ -41,6 +44,7 @@ class ProbeInserter extends MethodVisitor implements IProbeInserter {
 	/** Maximum stack usage of the code to access the probe array. */
 	private int accessorStackSize;
 
+	public static Set<Integer>indexs=new HashSet<>();
 	/**
 	 * Creates a new {@link ProbeInserter}.
 	 *
@@ -99,7 +103,27 @@ class ProbeInserter extends MethodVisitor implements IProbeInserter {
 
 	@Override
 	public final void visitVarInsn(final int opcode, final int var) {
-		mv.visitVarInsn(opcode, map(var));
+		int index=map(var);
+		mv.visitVarInsn(opcode,index);
+		int tempJacocoDataVar=map(index);
+		if(opcode== Opcodes.ASTORE&&indexs.contains(var)) {
+			mv.visitInsn(ICONST_1);
+			mv.visitTypeInsn(ANEWARRAY, "java/lang/Object");
+			mv.visitInsn(DUP);
+			mv.visitInsn(ICONST_0);
+			mv.visitVarInsn(ALOAD, index);
+			mv.visitInsn(AASTORE);
+			mv.visitVarInsn(ASTORE, tempJacocoDataVar);
+			mv.visitFieldInsn(GETSTATIC,"java/lang/UnknownError", "$jacocoAccess", "Ljava/lang/Object;");
+			mv.visitVarInsn(ALOAD,tempJacocoDataVar);
+			mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Object", "equals", "(Ljava/lang/Object;)Z", false);
+			mv.visitVarInsn(ALOAD, tempJacocoDataVar);
+			mv.visitInsn(ICONST_0);
+			mv.visitInsn(AALOAD);
+			mv.visitTypeInsn(CHECKCAST, "[Ljava/lang/reflect/Field;");
+			mv.visitTypeInsn(CHECKCAST, "[Ljava/lang/reflect/Field;");
+			mv.visitVarInsn(ASTORE, index);
+		}
 	}
 
 	@Override
