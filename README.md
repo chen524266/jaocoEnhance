@@ -6,8 +6,12 @@
  思路请参考博文https://blog.csdn.net/qq_34418450/article/details/135386280?spm=1001.2014.3001.5501
  这里不再赘述。
  如果大家不想编译，可以使用从发布版中下载我已经编译好的agent包和cli包
+
+功能说明:如下图，除了按照IP或者其他规则划分覆盖率，其他功能均已经开源
  
- 编译方法:已经去掉了一些不必要的模块和插件，直接执行mvn命令:mvn clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true
+![输入图片说明](%E5%8A%9F%E8%83%BD%E8%AF%B4%E6%98%8E.png)
+
+编译方法:已经去掉了一些不必要的模块和插件，直接执行mvn命令:mvn clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true
 使用方法:
 
 --diffcode是增量统计，不带则统计全量。可以自己生成这个数据，或者使用ray开源的https://gitee.com/Dray/code-diff获取，支持传入文件参数--diffCodeFiles
