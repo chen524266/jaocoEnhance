@@ -15,11 +15,12 @@ Maven Compilation : Some unnecessary modules and plugins have been removed. Dire
 
 ### new parameter explain:
 
---Diffcode or --diffCodeFiles is incremental statistics, without it, the entire quantity is counted. You can generate this data yourself, or use https://gitee.com/Dray/code-diff to Get diff 
-- onlyMergeExec if true, do not generate a report, only merge probe data, generate merged exec file 
--- mergeExcelfilepath list of JaCoCo *.exec that need to merge files to read
--- mergeClassfilepath location of Java class files need to merge
--- mergeExec output file for the finished merge exec file
+--Diffcode or --diffCodeFiles  is incremental statistics, without it, the entire quantity is counted.
+            You can generate this data yourself, or use https://gitee.com/Dray/code-diff to Get diff 
+-- onlyMergeExec  if true, do not generate a report, only merge probe data, generate merged exec file 
+-- mergeExcelfilepath  list of JaCoCo *.exec that need to merge files to read
+-- mergeClassfilepath  location of Java class files need to merge
+-- mergeExec output  file for the finished merge exec file
   
 For test examples, please refer to the test class org.jacoco.cli-INternal.commands ReportTest.mytest4()
 
