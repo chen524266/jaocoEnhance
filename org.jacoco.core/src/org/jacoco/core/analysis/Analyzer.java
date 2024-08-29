@@ -106,11 +106,8 @@ public class Analyzer {
 			probes = data.getProbes();
 			noMatch = false;
 		}
-		final ClassCoverageImpl coverage = new ClassCoverageImpl(className,
-				classid, noMatch);
-
-		final ClassAnalyzer analyzer = new ClassAnalyzer(coverage, probes,
-				stringPool, this.classInfos, onlyAnaly) {
+		final ClassCoverageImpl coverage = new ClassCoverageImpl(className, classid, noMatch);
+		final ClassAnalyzer analyzer = new ClassAnalyzer(coverage, probes, stringPool, this.classInfos, onlyAnaly) {
 			@Override
 			public void visitEnd() {
 				super.visitEnd();
@@ -149,9 +146,7 @@ public class Analyzer {
 		// visitEnd钩子方法里面实现的是coverageVisitor.visitCoverage(coverage);
 		// 所以先走的ClassAnalyzer的方法，在ClassAnalyzer调用visitEnd的时候调用coverageVisitor.visitCoverage(coverage);
 		// ClassAnalyzer的CoverageBuilder builder最终分析指令覆盖级别信息，再推理方法更大的级别
-		String className = reader.getClassName();
-		final ClassVisitor visitor = createAnalyzingVisitor(classId,
-				reader.getClassName(), isOnlyAnaly,reader);
+		final ClassVisitor visitor = createAnalyzingVisitor(classId,reader.getClassName(), isOnlyAnaly,reader);
 		// 重点，开始解析类里面的方法，逐个方法遍历
 		reader.accept(visitor, 0);
 	}

@@ -73,7 +73,7 @@ public class Report extends Command {
 	@Option(name = "--onlyMergeExec", usage = "only merger exec,not create report", metaVar = "<charset>")
 	String onlyMergeExec;
 
-	@Option(name = "--mergeExec", usage = "only merger exec,not create report", metaVar = "<charset>")
+	@Option(name = "--mergeExec", usage = "output file for the finished merge exec file ", metaVar = "<charset>")
 	String mergeExec;
 
 	@Option(name = "--xml", usage = "output file for the XML report", metaVar = "<file>")
@@ -91,25 +91,20 @@ public class Report extends Command {
 	}
 
 	@Override
-	public int execute(final PrintWriter out, final PrintWriter err)
-			throws IOException {
+	public int execute(final PrintWriter out, final PrintWriter err) throws IOException {
 		// 需要合并exec文件，同个方法就合并方法的指令的覆盖率
-		if (this.mergeExecfiles.size() != 0
-				&& this.mergeClassfiles.size() != 0) {
-			final ExecFileLoader loader = loadExecutionData(out,
-					mergeExecfiles);
+		if (this.mergeExecfiles.size() != 0 && this.mergeClassfiles.size() != 0) {
+			final ExecFileLoader loader = loadExecutionData(out, mergeExecfiles);
 			analyze(loader.getExecutionDataStore(), out, mergeClassfiles, true);
 		}
 		try {
-			StringWriter nowoutStringWriter = new StringWriter();
-			PrintWriter nowout = new PrintWriter(nowoutStringWriter);
 			final ExecFileLoader loader = loadExecutionData(out, this.execfiles);
-			final IBundleCoverage bundle = analyze(loader.getExecutionDataStore(), nowout, classfiles, false);
+			final IBundleCoverage bundle = analyze(loader.getExecutionDataStore(), out, classfiles, false);
 			// 只合并exec文件，不生成报告
 			if (onlyMergeExec != null && onlyMergeExec.equals("true")) {
 				loader.save(new File(mergeExec), false);
 			} else {
-				writeReports(bundle, loader, nowout);
+				writeReports(bundle, loader, out);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -117,6 +112,7 @@ public class Report extends Command {
 			ExecFileLoader.instrunctionsThreadLocal.remove();
 			ExecFileLoader.classInfo.remove();
 			ExecFileLoader.classInfoDto.remove();
+			ExecFileLoader.probesMap.remove();
 		}
 		return 0;
 	}
@@ -149,8 +145,7 @@ public class Report extends Command {
 		CoverageBuilder builder;
 		// 如果有增量参数将其设置进去
 		if (null != this.diffCodeFiles) {
-			builder = new CoverageBuilder(
-					JsonReadUtil.readJsonToString(this.diffCodeFiles));
+			builder = new CoverageBuilder(JsonReadUtil.readJsonToString(this.diffCodeFiles));
 		} else if (null != this.diffCode) {
 			builder = new CoverageBuilder(this.diffCode);
 		} else {

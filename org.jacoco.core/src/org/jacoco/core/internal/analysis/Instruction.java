@@ -178,6 +178,12 @@ public class Instruction {
         return result;
     }
 
+    public Instruction mergeNew(final Instruction other) {
+        this.coveredBranches.or(this.coveredBranches);
+        this.coveredBranches.or(other.coveredBranches);
+        return this;
+    }
+
     /**
      * Creates a copy of this instruction where all outgoing branches are
      * replaced with the given instructions. The coverage status of the new

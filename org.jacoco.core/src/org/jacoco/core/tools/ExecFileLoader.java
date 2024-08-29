@@ -48,6 +48,8 @@ public class ExecFileLoader {
 
 	public static ThreadLocal<List<ClassInfoDto>> classInfoDto = new ThreadLocal<>();
 
+	public static ThreadLocal<Map<String, boolean[]>> probesMap = new ThreadLocal<>();
+
 	/**
 	 * New instance to combine session infos and execution data from multiple
 	 * files.

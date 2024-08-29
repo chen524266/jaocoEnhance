@@ -26,6 +26,7 @@ import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import java.util.*;
+import java.util.stream.Collector;
 
 /**
  * Analyzes the structure of a class.
@@ -44,16 +45,15 @@ public class ClassAnalyzer extends ClassProbesVisitor
     private final Set<String> classAttributes = new HashSet<String>();
 
     private String sourceDebugExtension;
-
     // 只收集方法中的指令的覆盖率，在收集到指令后退出后面的分析流程
     private boolean onlyAnaly = false;
-
     /**
      * 变更类信息
      */
     private List<ClassInfoDto> classInfos;
 
     private final IFilter filter;
+
 
     /**
      * Creates a new analyzer that builds coverage data for a class.
@@ -141,30 +141,32 @@ public class ClassAnalyzer extends ClassProbesVisitor
                     }
                 }
                 Map<String, Map<String, Map<String, Instruction>>> instrunctions = ExecFileLoader.instrunctionsThreadLocal.get();
+                Map<String, boolean[]> probesMap = ExecFileLoader.probesMap.get();
                 if (onlyAnaly) {
                     Map<String, Map<String, Instruction>> methodInstructions = new HashMap<>();
                     Map<String, Instruction> instructionMap = new HashMap<>();
-                    Map<AbstractInsnNode, Instruction> builderInstructions = builder
-                            .getInstructions();
-                    for (Instruction instruction : builderInstructions
-                            .values()) {
+                    Map<AbstractInsnNode, Instruction> builderInstructions = builder.getInstructions();
+                    for (Instruction instruction : builderInstructions.values()) {
                         instructionMap.put(instruction.getSign(), instruction);
                     }
                     methodInstructions.put(methodSign, instructionMap);
                     if (instrunctions == null) {
                         instrunctions = new HashMap<>();
-                        instrunctions.put(coverage.getName(),
-                                methodInstructions);
-                        ExecFileLoader.instrunctionsThreadLocal
-                                .set(instrunctions);
+                        instrunctions.put(coverage.getName(), methodInstructions);
+                        ExecFileLoader.instrunctionsThreadLocal.set(instrunctions);
                     } else {
                         if (instrunctions.containsKey(coverage.getName())) {
-                            instrunctions.get(coverage.getName())
-                                    .put(methodSign, instructionMap);
+                            instrunctions.get(coverage.getName()).put(methodSign, instructionMap);
                         } else {
-                            instrunctions.put(coverage.getName(),
-                                    methodInstructions);
+                            instrunctions.put(coverage.getName(), methodInstructions);
                         }
+                    }
+                    if (probesMap == null) {
+                        probesMap = new HashMap<>();
+                        probesMap.put(coverage.getName(), probes);
+                        ExecFileLoader.probesMap.set(probesMap);
+                    } else {
+                        probesMap.put(coverage.getName(), probes);
                     }
                     return;
                 }
@@ -175,29 +177,44 @@ public class ClassAnalyzer extends ClassProbesVisitor
                     // 通过指令判断是否为同一个方法，所有指令签名一样的情况下判断是一样的
                     Map<AbstractInsnNode, Instruction> nowInstructions = builder.getInstructionsNotWireJumps();
                     if (mergeInstructionMap != null && mergeInstructionMap.size() == nowInstructions.size()) {
-                        boolean match = true;
-                        for (Instruction instruction : mergeInstructionMap
-                                .values()) {
-                            if (!isExistInstruction(nowInstructions,
-                                    instruction)) {
-                                match = false;
+                        boolean isSameMethod = true;
+                        for (final Instruction instruction : mergeInstructionMap.values()) {
+                            Optional<Instruction> optionalInstruction = nowInstructions.values().stream().filter(i -> i.getSign().equals(instruction.getSign())).findAny();
+                            if (!optionalInstruction.isPresent()) {
+                                isSameMethod = false;
                                 break;
                             }
                         }
                         // 同一个方法
-                        if (match) {
+                        if (isSameMethod) {
+                            //合并exec新方案--直接合并两个probes对应的探针
+                            Map<String, boolean[]> mergeProbesMap = ExecFileLoader.probesMap.get();
+                            Optional<Instruction> instructionOptional = nowInstructions.values().stream().filter(i -> i.getProbeIndex() > 0).min(Comparator.comparingInt(Instruction::getProbeIndex));
+                            if (probes != null && instructionOptional.isPresent()) {
+                                int probeStrart = instructionOptional.get().getProbeIndex();
+                                int probeEnd = nowInstructions.values().stream().filter(i -> i.getProbeIndex() > 0).max(Comparator.comparingInt(Instruction::getProbeIndex)).get().getProbeIndex();
+                                int mergeProbeStart = mergeInstructionMap.values().stream().filter(i -> i.getProbeIndex() > 0).min(Comparator.comparingInt(Instruction::getProbeIndex)).get().getProbeIndex();
+                                int mergeProbeEnd = mergeInstructionMap.values().stream().filter(i -> i.getProbeIndex() > 0).max(Comparator.comparingInt(Instruction::getProbeIndex)).get().getProbeIndex();
+                                //jacoco是以方法级别进行插桩的，所以理论上同个方法的探针的长度是一样的
+                                assert probeEnd - probeStrart == mergeProbeEnd - mergeProbeStart;
+                                if (mergeProbesMap != null && mergeProbesMap.containsKey(coverage.getName())) {
+                                    boolean[] mergeProbes = mergeProbesMap.get(coverage.getName());
+                                    int currentIndex = mergeProbeStart;
+                                    for (int k = probeStrart; k < probeEnd; k++) {
+                                        if (mergeProbes[currentIndex]) {
+                                            probes[k] = true;
+                                        }
+                                        currentIndex++;
+                                    }
+                                }
+                            }
+                            //合并指令
                             for (AbstractInsnNode key : nowInstructions.keySet()) {
                                 Instruction instruction = nowInstructions.get(key);
                                 //合并指令
                                 Instruction other = mergeInstructionMap.get(instruction.getSign());
-                                Instruction merge = instruction.merge(other);
+                                Instruction merge = instruction.mergeNew(other);
                                 nowInstructions.put(key, merge);
-                                // 合并探针  https://github.com/jacoco/jacoco/issues/1644,fix由于插桩策略的问题导致的jump探针不能直接合并的问题
-                                if (probes != null && instruction.getProbeIndex() != -1) {
-                                    if ((merge.branches > 1 && merge.getBranchCounter().getMissedCount() == 0) || merge.branches == 1) {
-                                        probes[instruction.getProbeIndex()] = merge.getInstructionCounter().getCoveredCount() > 0;
-                                    }
-                                }
                             }
                         }
                     }
@@ -207,16 +224,6 @@ public class ClassAnalyzer extends ClassProbesVisitor
         };
     }
 
-    private boolean isExistInstruction(
-            Map<AbstractInsnNode, Instruction> instrunctions,
-            Instruction instruction) {
-        for (Instruction instruction1 : instrunctions.values()) {
-            if (instruction1.getSign().equals(instruction.getSign())) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     private void addMethodCoverage(final String name, final String desc,
                                    final String signature, final InstructionsBuilder icc,

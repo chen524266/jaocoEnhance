@@ -176,22 +176,14 @@ public class Table {
                   final ICoverageNode total) throws IOException {
             if (visible) {
                 final HTMLElement td = tr.td(style);
-                td.attr("id",
-                        idprefix + String.valueOf(index.getPosition(idx)));
-                if (this.header.equals("修改人")
-                        || this.header.equals("提交信息")) {
+                td.attr("id", idprefix + String.valueOf(index.getPosition(idx)));
+                if (this.header.equals("修改人") || this.header.equals("提交信息")) {
                     if (ExecFileLoader.classInfo.get() != null) {
-                        Map<String, Map<String, List<MethodInfoDto>>> classInfoDtos = ExecFileLoader.classInfo
-                                .get();
+                        Map<String, Map<String, List<MethodInfoDto>>> classInfoDtos = ExecFileLoader.classInfo.get();
                         if (classInfoDtos.containsKey(total.getName())) {
-                            Map<String, List<MethodInfoDto>> method = classInfoDtos
-                                    .get(total.getName());
+                            Map<String, List<MethodInfoDto>> method = classInfoDtos.get(total.getName());
                             if (method.containsKey(item.getNode().getName())) {
-                                String text = this.header.equals("修改人")
-                                        ? method.get(item.getNode().getName())
-                                        .get(0).getAuthor()
-                                        : method.get(item.getNode().getName())
-                                        .get(0).getCommitMessage();
+                                String text = this.header.equals("修改人") ? method.get(item.getNode().getName()).get(0).getAuthor() : method.get(item.getNode().getName()).get(0).getCommitMessage();
                                 text = text == null ? "未知，请联系平台管理员！" : text;
                                 td.text(text);
                             }

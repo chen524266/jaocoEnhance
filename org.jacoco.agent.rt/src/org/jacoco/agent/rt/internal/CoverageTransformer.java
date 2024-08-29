@@ -66,7 +66,9 @@ public class CoverageTransformer implements ClassFileTransformer {
 		this.logger = logger;
 		// Class names will be reported in VM notation:
 		includes = new WildcardMatcher(toVMName(options.getIncludes()));
-		excludes = new WildcardMatcher(toVMName(options.getExcludes()));
+		//增加一个默认的过滤规则，对org.jacoco.*不进行插桩
+		String expr=options.getExcludes()+"|org.jacoco.*";
+		excludes = new WildcardMatcher(toVMName(expr));
 		exclClassloader = new WildcardMatcher(options.getExclClassloader());
 		classFileDumper = new ClassFileDumper(options.getClassDumpDir());
 		inclBootstrapClasses = options.getInclBootstrapClasses();
@@ -118,8 +120,7 @@ public class CoverageTransformer implements ClassFileTransformer {
 				return false;
 			}
 		} else {
-			if (!inclNoLocationClasses
-					&& !hasSourceLocation(protectionDomain)) {
+			if (!inclNoLocationClasses && !hasSourceLocation(protectionDomain)) {
 				return false;
 			}
 			if (exclClassloader.matches(loader.getClass().getName())) {
@@ -127,11 +128,7 @@ public class CoverageTransformer implements ClassFileTransformer {
 			}
 		}
 
-		return !classname.startsWith(AGENT_PREFIX) &&
-
-				includes.matches(classname) &&
-
-				!excludes.matches(classname);
+		return !classname.startsWith(AGENT_PREFIX) && includes.matches(classname) && !excludes.matches(classname);
 	}
 
 	/**

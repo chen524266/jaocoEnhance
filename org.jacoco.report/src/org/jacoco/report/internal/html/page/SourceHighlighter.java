@@ -90,14 +90,12 @@ final class SourceHighlighter {
         }
     }
 
-    private void renderCodeLine(final HTMLElement pre, final String linesrc,
-                                final ILine line, final int lineNr, List<ChangeLine> changeLineList) throws IOException {
+    private void renderCodeLine(final HTMLElement pre, final String linesrc, final ILine line, final int lineNr, List<ChangeLine> changeLineList) throws IOException {
         highlight(pre, line, lineNr, changeLineList).text(linesrc);
         pre.text("\n");
     }
 
-    HTMLElement highlight(final HTMLElement pre, final ILine line,
-                          final int lineNr, List<ChangeLine> changeLineList) throws IOException {
+    HTMLElement highlight(final HTMLElement pre, final ILine line, final int lineNr, List<ChangeLine> changeLineList) throws IOException {
         String style;
         switch (line.getStatus()) {
             case ICounter.NOT_COVERED:
@@ -159,11 +157,6 @@ final class SourceHighlighter {
                 break;
             default:
                 return pre;
-        }
-
-        if (ExecFileLoader.classInfo.get() != null) {
-            Map<String, Map<String, List<MethodInfoDto>>> map = ExecFileLoader.classInfo.get();
-
         }
         final String lineId = "L" + Integer.toString(lineNr);
         final ICounter branches = line.getBranchCounter();
