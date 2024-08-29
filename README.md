@@ -9,7 +9,7 @@
 
 功能说明:如下图，除了按照IP或者其他规则划分覆盖率，其他功能均已经开源
  
-![输入图片说明](%E5%8A%9F%E8%83%BD%E8%AF%B4%E6%98%8E.png)
+![image](https://github.com/user-attachments/assets/efaf3c5f-7196-493d-9f58-23222a4736e1)
 
 编译方法:已经去掉了一些不必要的模块和插件，直接执行mvn命令:mvn clean install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true
 使用方法:
@@ -68,4 +68,5 @@ java -jar org.jacoco.cli-0.8.7-SNAPSHOT-nodeps.jar report F:\webDemo\exec\merged
 java -jar org.jacoco.cli-0.8.7-SNAPSHOT-nodeps.jar report F:\webDemo\exec\merged.exec --classfiles F:\webDemo\target\classes --sourcefiles F:\webDemo\src\main\java --html F:\webDemo\exec\report_full
 
    如有任何疑问，可以加作者微信群交流    
-![输入图片说明](image2.png)
+![image](https://github.com/user-attachments/assets/a02c5b59-0999-45ef-b0b5-754dfabdb472)
+
